@@ -1,0 +1,231 @@
+/* ── Calendar Widget ─────────────────────────────────── */
+
+.ajax-cal-widget,
+.ajax-cal-widget * {
+    box-sizing: border-box;
+}
+
+.ajax-cal-widget {
+    --cal-primary: #2271b1;
+    position: relative;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #3c434a;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Dropdowns row */
+.ajax-cal-widget .cal-dropdowns {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    margin: 0;
+    background: #f6f7f7;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.ajax-cal-widget .cal-dropdowns select {
+    flex: 1;
+    min-width: 0;
+    padding: 5px 8px;
+    margin: 0;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    color: #1d2327;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: normal;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-appearance: auto;
+    appearance: auto;
+}
+
+.ajax-cal-widget .cal-dropdowns select:focus {
+    outline: 2px solid var(--cal-primary);
+    outline-offset: 0;
+    border-color: var(--cal-primary);
+}
+
+/* Header with nav arrows */
+.ajax-cal-widget .cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin: 0;
+    background: var(--cal-primary);
+    color: #fff;
+}
+
+.ajax-cal-widget .cal-header span {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ajax-cal-widget .cal-title-wrap {
+    display: inline-block;
+}
+
+.ajax-cal-widget .cal-spinner {
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0.7;
+    background: var(--cal-spinner-url, url('/wp-admin/images/spinner.gif')) no-repeat center;
+    background-size: 20px 20px;
+}
+
+.ajax-cal-widget .cal-spinner.is-active {
+    visibility: visible;
+}
+
+.ajax-cal-widget .cal-header button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+    text-transform: none;
+    text-decoration: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    margin: 0;
+    width: auto;
+    height: auto;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+
+.ajax-cal-widget .cal-header button:hover,
+.ajax-cal-widget .cal-header button:focus {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #fff;
+    opacity: 1;
+}
+
+/* Calendar table */
+.ajax-cal-widget .cal-body-wrap {
+    position: relative;
+}
+.ajax-cal-widget .cal-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+    table-layout: auto;
+}
+
+.ajax-cal-widget .cal-table thead th {
+    text-align: center;
+    padding: 7px 0;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #646970;
+    background: #f6f7f7;
+    border: none;
+    border-bottom: 1px solid #dcdcde;
+    vertical-align: middle;
+}
+
+.ajax-cal-widget .cal-table tbody td {
+    text-align: center;
+    padding: 5px 2px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #3c434a;
+    background: transparent;
+    border: 1px solid #f0f0f1;
+    vertical-align: middle;
+}
+
+.ajax-cal-widget .cal-table tbody td:not(:empty):hover {
+    background: #f0f6fc;
+    color: var(--cal-primary);
+    cursor: pointer;
+}
+
+/* Today highlight */
+.ajax-cal-widget .cal-table .cal-today {
+    background: var(--cal-primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.ajax-cal-widget .cal-table .cal-today:hover {
+    background: var(--cal-primary);
+    color: #fff;
+    cursor: default;
+}
+
+/* Days with posts */
+.ajax-cal-widget .cal-table .cal-has-posts {
+    font-weight: 600;
+}
+
+.ajax-cal-widget .cal-table .cal-has-posts a {
+    display: block;
+    color: var(--cal-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+.ajax-cal-widget .cal-table .cal-has-posts a:hover {
+    text-decoration: none;
+    color: var(--cal-primary);
+}
+
+/* Today that also has posts */
+.ajax-cal-widget .cal-table .cal-today.cal-has-posts a {
+    color: #fff;
+    text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+.ajax-cal-widget .cal-table .cal-today.cal-has-posts a:hover {
+    color: #fff;
+    text-decoration: none;
+}
