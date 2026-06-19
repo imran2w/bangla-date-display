@@ -1,0 +1,20 @@
+name: Deploy to WordPress.org SVN
+on:
+  release:
+    types: [released]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: WordPress.org Plugin Deploy
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        # Optional: If your GitHub repo name matches your WP slug, 
+        # you can omit the line below. Otherwise, define it:
+        # SLUG: your-wordpress-plugin-slug
