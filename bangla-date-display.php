@@ -4,7 +4,7 @@ Plugin Name: Bangla Date Display
 Plugin URI: https://imran.link
 Description: Displays Bangla, Gregorian and Hijri date in bangla language via widgets and shortcodes! Options for displaying post/page's time, date, comment count, archive calendar etc in Bangla language.
 Author: ALI IMRAN
-Version: 10.0.0
+Version: 10.0.1
 Author URI: https://imran.link
 */
 
@@ -16,7 +16,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 defined( 'ABSPATH' ) or die( 'Stop! You can not do this!' );
 
-define( 'BDDP_VERSION', '10.0.0' );
+define( 'BDDP_VERSION', '10.0.1' );
 
 require __DIR__ . '/ajax-archive-calendar.php';
 

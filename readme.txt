@@ -1,10 +1,10 @@
 === Bangla Date Display ===
 Contributors: imran2w
 Developer link: https://imran.link
-Tags: Bangla, Bengali, Bangla Date, Bangla Calendar, Bangla Archive, Bangladesh, Bangla Time, Bangla Season, Hijri Date
+Tags: Bangla, Bangla Date, Bangla Calendar, Bangla Time, Hijri Date
 Requires at least: 3.0
 Tested up to: 7.0
-Stable tag: 10.0.0
+Stable tag: 10.0.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -49,38 +49,18 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the d
 * E-Mail: imran4dev@gmail.com
 * Website: [imran.link](https://imran.link)
 
-= Thanks to =
-* [osman sorkar](https://profiles.wordpress.org/osmansorkar/) for Ajax Archive Calendar
-
 
 == Changelog ==
-= 10.0.0 =
+= 10.0 =
 * Core features are rewritten in JS instead of PHP.
 * Will work properly on Cache-enabled sites.
+* Both Bangladesh and Indian calendar support.
 * Redesigned Archive Calendar Widget.
 * Optimized for improved performance.
 * Fixed security issues.
 * Compatible with WP 7.0
 
-= 9.4 =
-* Minor bug fixes.
-
-= 9.3 =
-* Minor bug fixes.
-
-= 9.2 =
-* Ongoing improvements.
-
-= 9.1 =
-* Minor bug fixes.
-
-= 9.0 =
-* Improved and simplified settings
-* Hijri month name spelling updated.
-* Time Zone option added for Hijri date.
-* Known bugs fixed.
-
-= 1.0 - 8.9 =
+= 1.0 - 9.4 =
 * Many changes and improvements.
 
 == Installation ==
@@ -122,7 +102,7 @@ Use these shortcodes in your blog post/page:
 
 * Show current date from bangla calendar: [bangla_date]
 
-* Show english date in bangla language: [english_date]
+* Show english date in bangla language: [gregorian_date]
 
 * Show hijri date in bangla language: [hijri_date]
 
@@ -132,6 +112,8 @@ Use these shortcodes in your blog post/page:
 
 * Show name of the current season:  [bangla_season]
 
+* Show Archive Calendar: [ajax_calendar]
+
 
 Or, Use these PHP codes in your theme's sidebar or template file:
 
@@ -139,7 +121,7 @@ Or, Use these PHP codes in your theme's sidebar or template file:
 < ?php echo do_shortcode('[bangla_date]'); ?>
 
 * Show english date in bangla language: 
-< ?php echo do_shortcode('[english_date]'); ?>
+< ?php echo do_shortcode('[gregorian_date]'); ?>
 
 * Show hijri date in bangla language: 
 < ?php echo do_shortcode('[hijri_date]'); ?>
@@ -152,6 +134,9 @@ Or, Use these PHP codes in your theme's sidebar or template file:
  
 * Show name of the current season:
 < ?php echo do_shortcode('[bangla_season]'); ?>
+
+* Show Archive Calendar:
+< ?php echo do_shortcode('[ajax_calendar]'); ?>
 
 = Is it customizable? =
 Yes! This plugin is almost fully customizable! After installation and activation, go to "Settings -> Bangla Date Display" for plugin settings.
