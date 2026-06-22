@@ -4,6 +4,7 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, day name, and
 
 ## Plugin Info
 
+- Link: https://wordpress.org/plugins/bangla-date-display
 - Contributors: imran2w
 - Developer link: https://imran.link
 - Tags: Bangla, Bangla Date, Bangla Calendar, Bangla Time, Hijri Date
