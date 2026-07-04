@@ -4,7 +4,7 @@ Plugin Name: Bangla Date Display
 Plugin URI: https://imran.link
 Description: Displays Bangla, Gregorian and Hijri date in bangla language via widgets and shortcodes! Options for displaying post/page's time, date, comment count, archive calendar etc in Bangla language.
 Author: ALI IMRAN
-Version: 10.0.1
+Version: 10.1.0
 Author URI: https://imran.link
 */
 
@@ -16,7 +16,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 defined( 'ABSPATH' ) or die( 'Stop! You can not do this!' );
 
-define( 'BDDP_VERSION', '10.0.1' );
+define( 'BDDP_VERSION', '10.1.0' );
 
 require __DIR__ . '/ajax-archive-calendar.php';
 
@@ -38,6 +38,7 @@ class Bangla_Date_Display {
 			'separator' => ', ',
 			'last_word' => '1',
 			'hijri_adjust' => '0',
+			'hijri_change_at' => '00:00',
 		];
 		$raw = get_option( 'bddp_options', $defaults );
 		$this->options = is_array( $raw ) ? $raw : $defaults;
@@ -130,10 +131,11 @@ class Bangla_Date_Display {
 		$this->enqueue_datetime_assets();
 		$hijri_calendar = $this->options['hijri_calendar'] ?? 'umalqura';
 		$hijri_adjust = $this->options['hijri_adjust'] ?? '0';
+		$hijri_change_at = $this->options['hijri_change_at'] ?? '00:00';
 		$separator = $this->options['separator'] ?? ', ';
 		$ord_suffix = $this->options['ord_suffix'] ?? '0';
 		$last_word = $this->options['last_word'] ?? '0';
-		return '<span class="bangla-hijri-date" data-calendar="' . esc_attr( $hijri_calendar ) . '" data-adjust="' . esc_attr( $hijri_adjust ) . '" data-separator="' . esc_attr( $separator ) . '" data-ord-suffix="' . esc_attr( $ord_suffix ) . '" data-last-word="' . esc_attr( $last_word ) . '"></span>';
+		return '<span class="bangla-hijri-date" data-calendar="' . esc_attr( $hijri_calendar ) . '" data-adjust="' . esc_attr( $hijri_adjust ) . '" data-change-at="' . esc_attr( $hijri_change_at ) . '" data-separator="' . esc_attr( $separator ) . '" data-ord-suffix="' . esc_attr( $ord_suffix ) . '" data-last-word="' . esc_attr( $last_word ) . '"></span>';
 	}
 
 	public function enqueue_scripts(): void {
@@ -163,5 +165,5 @@ require __DIR__ . '/widgets.php';
 
 // ============ Settings ========================
 if ( is_admin() ) {
-	include __DIR__ . '/bddp_admin.php';
+	include __DIR__ . '/bddp-admin.php';
 }

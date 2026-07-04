@@ -48,6 +48,7 @@ class BanglaDateTime {
                 const separator = el.dataset.separator || ', ';
                 const ordSuffix = (el.dataset.ordSuffix || '1') === '1' ? true : false;
                 const lastWord = (el.dataset.lastWord || '1') === '1' ? true : false;
+                const changeAt = el.dataset.changeAt || '00:00';
                 let adjustDays = parseInt(el.dataset.adjust || '0', 10);
                 if (!Number.isFinite(adjustDays)) {
                     adjustDays = 0;
@@ -58,7 +59,7 @@ class BanglaDateTime {
                     adjustDays = adjustDays / 24;
                 }
 
-                el.textContent = this.getHijriDate(calendar, ordSuffix, separator, lastWord, adjustDays);
+                el.textContent = this.getHijriDate(calendar, ordSuffix, separator, lastWord, adjustDays, changeAt);
             });
         }
     }
@@ -169,13 +170,54 @@ class BanglaDateTime {
         return 'বসন্তকাল';                          // ফাল্গুন–চৈত্র
     }
 
-    getHijriDate(calendar = 'umalqura', showOrdinal = true, separator = ', ', includeEra = true, dayOffset = 0) {
-        const now = new Date( Date.now() + dayOffset * 86400000 );
+    _parseTimeToMinutes(timeValue = '00:00') {
+        const value = String(timeValue || '').trim().toLowerCase();
+        if (!value) {
+            return 0;
+        }
+
+        const match = value.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/);
+        if (!match) {
+            return 0;
+        }
+
+        let hour = parseInt(match[1], 10);
+        const minute = parseInt(match[2] || '0', 10);
+        const meridiem = match[3];
+
+        if (minute < 0 || minute > 59) {
+            return 0;
+        }
+
+        if (meridiem) {
+            if (hour < 1 || hour > 12) {
+                return 0;
+            }
+            if (hour === 12) {
+                hour = 0;
+            }
+            if (meridiem === 'pm') {
+                hour += 12;
+            }
+        } else if (hour < 0 || hour > 23) {
+            return 0;
+        }
+
+        return hour * 60 + minute;
+    }
+
+    getHijriDate(calendar = 'umalqura', showOrdinal = true, separator = ', ', includeEra = true, dayOffset = 0, changeAt = '00:00') {
+        const changeMinutes = this._parseTimeToMinutes(changeAt);
+        const now = new Date();
+        const currentMinutes = (now.getHours() * 60) + now.getMinutes();
+        // Midnight means normal date boundary; do not auto-advance by one day.
+        const rolloverOffset = changeMinutes === 0 ? 0 : (currentMinutes >= changeMinutes ? 1 : 0);
+        const effectiveDate = new Date(Date.now() + (dayOffset + rolloverOffset) * 86400000);
         const parts = new Intl.DateTimeFormat(`en-u-ca-islamic-${calendar}`, {
             day: 'numeric',
             month: 'numeric',
             year: 'numeric'
-        }).formatToParts(now);
+        }).formatToParts(effectiveDate);
 
         const get = type => parseInt(parts.find(p => p.type === type).value);
         const day = get('day');

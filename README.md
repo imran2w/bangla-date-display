@@ -10,18 +10,14 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, day name, and
 - Tags: Bangla, Bangla Date, Bangla Calendar, Bangla Time, Hijri Date
 - Requires at least: 3.0
 - Tested up to: 7.0
-- Stable tag: 10.0.1
+- Stable tag: 10.1.0
 - Requires PHP: 5.6
 - License: GPLv2 or later
 - License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 ## Description
 
-Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the day, name of the current season of Bangladesh, and more in Bangla language. Options are also available for displaying post/page default (English) date, time, comment count, and numbers in Bangla language.
-
-## নতুন বাংলা বর্ষপঞ্জি (১৭ অক্টোবর ২০১৯)
-
-পুরনো নিয়মে বৈশাখ থেকে ভাদ্র- এই পাঁচ মাস গণনা করা হতো ৩১ দিনে। আর আশ্বিন থেকে চৈত্র- সাত মাস হতো ৩০ দিনে। তবে ইংরেজি লিপইয়ারে ফাল্গুন মাস ৩১ দিনে হতো। এখন নতুন নিয়মে বৈশাখ থেকে আশ্বিন- প্রথম ছয় মাস ৩১ দিনে হবে। কার্তিক, অগ্রহায়ণ, পৌষ, মাঘ ও চৈত্র- এই ৫ মাস হিসাব করা হবে ৩০ দিনে। আর ফাল্গুন মাস হিসাব করা হবে ২৯ দিনে। ইংরেজি লিপইয়ারের বছর এক দিন বেড়ে ফাল্গুন হবে ৩০ দিনের মাস।
+Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the day, name of the current season, and more in Bangla language. Options are also available for displaying post/page default (English) date, time, comment count, and numbers in Bangla language.
 
 ## Usage
 
@@ -31,26 +27,12 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the d
 
 ## Features
 
-- Bangla date
-- Hijri date
-- Gregorian date
-- Bangla day and time
-- Name of the current season of Bangladesh
-- Advanced Bangla archive calendar widget
-- Options for displaying post/page default (English) time, date, comment count, and numbers in Bangla language
-
-## Speciality
-
-- It is free
-- Very simple
-- Easy admin panel
-- Fully customizable
-- Built-in functionality
-- Wide-range compatibility
-- Easy to use widgets and shortcodes
-- All date/time output in Bangla language
-- No special configuration or technical knowledge required
-- Automatic GMT+6 (Dhaka, Bangladesh) time and date
+- Bangla date (Bangladesh and India).
+- Hijri Date.
+- Gregorian date.
+- Bangla day, time and current season name.
+- Advanced bangla archive calendar widget.
+- Options for displaying post/page's default (english) time, date, comment count etc in bangla language.
 
 ## Credits
 
@@ -60,7 +42,12 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the d
 
 ## Changelog
 
-### 10.0
+### 10.1.0
+
+- Added option for Hijri date roll over time.
+- Ongoing improvements.
+
+### 10.0.0
 
 - Core features are rewritten in JS instead of PHP
 - Works properly on cache-enabled sites
@@ -102,7 +89,7 @@ Use these shortcodes in posts/pages:
 - [bangla_day]
 - [bangla_time]
 - [bangla_season]
-- [ajax_calendar]
+- [ajax_calendar start_year="2026" language="bn"]
 
 Or use these PHP snippets in theme templates:
 
@@ -113,7 +100,7 @@ Or use these PHP snippets in theme templates:
 <?php echo do_shortcode('[bangla_day]'); ?>
 <?php echo do_shortcode('[bangla_time]'); ?>
 <?php echo do_shortcode('[bangla_season]'); ?>
-<?php echo do_shortcode('[ajax_calendar]'); ?>
+<?php echo do_shortcode('[ajax_calendar start_year="2026" language="bn"]'); ?>
 ```
 
 ### Is it customizable?
@@ -126,7 +113,3 @@ Yes. After installation and activation, go to Settings -> Bangla Date Display.
 2. Time and Date
 3. Advanced Archive Calendar Widget
 4. Settings Page
-
-## License
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.

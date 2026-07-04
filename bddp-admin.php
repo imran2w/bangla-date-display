@@ -33,11 +33,35 @@ function bddp_options_page() {
 					'separator' => ', ',
 					'last_word' => '1',
 					'hijri_adjust' => '0',
+					'hijri_change_at' => '00:00',
 					'cal_wgt' => '0' );
 			}
 	
 			$last_word  = ( $bddp_options['last_word'] ?? '0' ) === '1';
 			$ord_suffix = ( $bddp_options['ord_suffix'] ?? '0' ) === '1';
+			$hijri_change_at_value = trim( (string) ( $bddp_options['hijri_change_at'] ?? '00:00' ) );
+			if ( preg_match( '/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/', $hijri_change_at_value, $m ) ) {
+				$hour_12 = (int) $m[1];
+				$minute = (int) $m[2];
+				$meridiem = strtolower( $m[3] );
+				if ( $hour_12 >= 1 && $hour_12 <= 12 && $minute >= 0 && $minute <= 59 ) {
+					$hour_24 = $hour_12 % 12;
+					if ( 'pm' === $meridiem ) {
+						$hour_24 += 12;
+					}
+					$hijri_change_at_value = sprintf( '%02d:%02d', $hour_24, $minute );
+				}
+			} elseif ( preg_match( '/^(\d{1,2}):(\d{2})$/', $hijri_change_at_value, $m ) ) {
+				$hour_24 = (int) $m[1];
+				$minute = (int) $m[2];
+				if ( $hour_24 >= 0 && $hour_24 <= 23 && $minute >= 0 && $minute <= 59 ) {
+					$hijri_change_at_value = sprintf( '%02d:%02d', $hour_24, $minute );
+				} else {
+					$hijri_change_at_value = '00:00';
+				}
+			} else {
+				$hijri_change_at_value = '00:00';
+			}
 
 			?>
 			
@@ -111,15 +135,18 @@ function bddp_options_page() {
 										'+3 days' => '3',
 									);
 									foreach($hijri_adjst_options as $key=>$value) {
-										if($bddp_options[ 'hijri_adjust'] == $value) {
-											echo '<option value="'.$value.'" selected>'.$key.'</option>';
-										} else {
-											echo '<option value="'.$value.'">'.$key.'</option>';
-										}
+										echo '<option value="'.$value.'" '.($bddp_options[ 'hijri_adjust'] == $value ? 'selected' : '').'>'.$key.'</option>';
 									}
 								?>
 							</select>
 							<p class="description">Hijri month can have 29 or 30 days depending on the visibility of the moon. Adjust it manually.</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hijri_change_at">Hijri Date Change Time</label></th>
+						<td>
+							<input id="hijri_change_at" name="bddp_options[hijri_change_at]" type="text" value="<?php echo esc_attr( $hijri_change_at_value ); ?>" class="time-picker" autocomplete="off">
+							<p class="description">Time when the Hijri date should roll over. Default: 12:00 AM (midnight).</p>
 						</td>
 					</tr>
 				</tbody>
@@ -183,54 +210,28 @@ function bddp_options_page() {
 						<th style="border: 1px solid silver; background-color: #CCC;">Shortcode</th>
 						<th style="border: 1px solid silver; background-color: #CCC;">PHP Code</th>
 					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Bangla date:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;bangla_date&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;bangla_date&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Gregorian date:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;gregorian_date&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;gregorian_date&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Hijri date:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;hijri_date&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;hijri_date&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Current time:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;bangla_time&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;bangla_time&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Day name:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;bangla_day&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;bangla_day&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid silver; padding-left: 5px;">Season name:</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB"> &#91;bangla_season&#93;</span></span></code>
-						</td>
-						<td style="border: 1px solid silver; padding-left: 5px;"><code><span style="color: #000000"><span style="color: #0000BB">   &#60;&#63;php echo do_shortcode&#40;&#39;&#91;bangla_season&#93;&#39;&#41;; </span><span style="color: #0000BB">&#63;&#62;</span></span>
-</code>
-						</td>
-					</tr>
+					<?php
+						$shortcode_items = array(
+							array( 'Bangla date:', '[bangla_date]' ),
+							array( 'Gregorian date:', '[gregorian_date]' ),
+							array( 'Hijri date:', '[hijri_date]' ),
+							array( 'Current time:', '[bangla_time]' ),
+							array( 'Day name:', '[bangla_day]' ),
+							array( 'Season name:', '[bangla_season]' ),
+							array( 'Archive Calendar:', '[ajax_calendar start_year="2026" language="bn"]' ),
+						);
+
+						foreach ( $shortcode_items as $shortcode_item ) :
+							$item_label = $shortcode_item[0];
+							$shortcode_tag = $shortcode_item[1];
+							$php_code = sprintf( "<?php echo do_shortcode('%s'); ?>", $shortcode_tag );
+						?>
+							<tr>
+								<td style="border: 1px solid silver; padding-left: 5px;"><?php echo esc_html( $item_label ); ?></td>
+								<td style="border: 1px solid silver; padding-left: 5px;"><code><?php echo esc_html( $shortcode_tag ); ?></code></td>
+								<td style="border: 1px solid silver; padding-left: 5px;"><code><?php echo esc_html( $php_code ); ?></code></td>
+							</tr>
+						<?php endforeach; ?>
 				</table>
 			</div>
 		</div>
@@ -259,15 +260,43 @@ function bddp_options_page() {
 	}
 
 
-	add_action( 'admin_menu', 'bddp_admin' );
-
-	function bddp_admin() {
-		add_options_page( 'Bangla Date Display Settings', 'Bangla Date Display', 'manage_options', 'bangla-date-display', 'bddp_options_page' );
+	add_action( 'admin_menu', 'bddp_admin_page' );
+	function bddp_admin_page() {
+		global $bddp_page_hook;
+		$bddp_page_hook = add_options_page( 'Bangla Date Display Settings', 'Bangla Date Display', 'manage_options', 'bangla-date-display', 'bddp_options_page' );
 	}
+
+	function bddp_admin_enqueue_assets($current_admin_page) {
+		global $bddp_page_hook;
+
+		// CRITICAL CHECK: Only run if the current page handle matches our specific page hook
+		if ($current_admin_page !== $bddp_page_hook) {
+			return; 
+		}
+
+		// Enqueue Flatpickr CSS from CDN
+		wp_enqueue_style('flatpickr-css', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css');
+		// Enqueue Flatpickr JS from CDN
+		wp_enqueue_script('flatpickr-js', 'https://cdn.jsdelivr.net/npm/flatpickr');
+
+		// Inject the inline initialization script to turn our input into a time picker
+		$custom_js = "
+			document.addEventListener('DOMContentLoaded', function() {
+				flatpickr('.time-picker', {
+					enableTime: true,       // Enable time picker
+					noCalendar: true,       // Turn off the calendar view
+					dateFormat: 'h:i K',      // 12-hour format with AM/PM
+					time_24hr: false         // Use 24-hour mode
+				});
+			});
+		";
+		wp_add_inline_script('flatpickr-js', $custom_js);
+	}
+	// Hook into the standard admin asset manager
+	add_action('admin_enqueue_scripts', 'bddp_admin_enqueue_assets');
 
 	// Register settings --------------------------------
 	add_action( 'admin_init', 'register_bddp_settings' );
-
 	function register_bddp_settings() {
 		register_setting(
 			'bddp-settings-group',
@@ -303,6 +332,27 @@ function bddp_options_page() {
 		}
 		$hijri_adjust = max( -3, min( 3, $hijri_adjust ) );
 		$output['hijri_adjust'] = (string) $hijri_adjust;
+
+		$hijri_change_at = isset( $input['hijri_change_at'] ) ? trim( (string) $input['hijri_change_at'] ) : '00:00';
+		if ( preg_match( '/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM|am|pm)?$/', $hijri_change_at, $parts ) ) {
+			$hour = (int) $parts[1];
+			$minute = isset( $parts[2] ) ? (int) $parts[2] : 0;
+			$meridiem = isset( $parts[3] ) ? strtolower( $parts[3] ) : '';
+
+			$is_valid = $minute >= 0 && $minute <= 59;
+			if ( $is_valid && '' !== $meridiem ) {
+				$is_valid = $hour >= 1 && $hour <= 12;
+			} elseif ( $is_valid ) {
+				$is_valid = $hour >= 0 && $hour <= 23;
+			}
+
+			if ( ! $is_valid ) {
+				$hijri_change_at = '00:00';
+			}
+		} else {
+			$hijri_change_at = '00:00';
+		}
+		$output['hijri_change_at'] = $hijri_change_at;
 
 		return $output;
 	}
