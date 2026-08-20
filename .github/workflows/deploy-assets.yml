@@ -1,0 +1,21 @@
+name: Update Assets/Readme on WordPress.org
+
+on:
+  push:
+    branches: [ "master" ] # or main
+    paths:
+      - 'readme.txt'
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Sync Readme & Assets to WordPress.org
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          # SLUG: bangla-date-display # Optional: Add if repo name differs from WP slug

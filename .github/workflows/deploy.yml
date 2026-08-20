@@ -2,10 +2,6 @@ name: Deploy to WordPress.org SVN
 on:
   release:
     types: [released]
-  push:
-    branches: [ "master" ] # or main
-    paths:
-      - 'readme.txt'     # Triggers ONLY when readme.txt is updated
 
 jobs:
   deploy:
