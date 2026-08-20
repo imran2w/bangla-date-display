@@ -1,4 +1,4 @@
-name: Deploy Readme to WordPress.org SVN
+name: Update Readme on WordPress.org
 
 on:
   push:
@@ -7,16 +7,27 @@ on:
       - 'readme.txt'
 
 jobs:
-  readme:
+  update-readme:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Deploy Readme to SVN
-        uses: 10up/action-wordpress-plugin-deploy@stable
-        env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          GITHUB_REF: "refs/heads/trunk" # Prevents tag path resolution
-          GENERATE_ZIP: false
+      - name: Install SVN
+        run: sudo apt-get install -y subversion
+
+      - name: Commit readme.txt to WordPress.org SVN
+        run: |
+          # Checkout trunk only
+          svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-display/trunk svn-trunk
+          cd svn-trunk
+          svn update readme.txt
+          
+          # Copy updated readme.txt from repository
+          cp ../readme.txt readme.txt
+          
+          # Commit changes to SVN
+          svn commit -m "Update Tested up to / readme.txt via GitHub Actions" \
+            --username "${{ secrets.SVN_USERNAME }}" \
+            --password "${{ secrets.SVN_PASSWORD }}" \
+            --non-interactive
