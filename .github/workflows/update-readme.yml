@@ -16,18 +16,24 @@ jobs:
       - name: Install SVN
         run: sudo apt-get install -y subversion
 
-      - name: Commit readme.txt to WordPress.org SVN
+      - name: Commit readme.txt to WordPress.org SVN (Trunk + Tag)
         run: |
-          # Checkout trunk only
-          svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-display/tags/10.1.0 svn-tag
-          cd svn-tag
+          # Checkout trunk
+          svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-display/trunk svn-trunk
+          cd svn-trunk
           svn update readme.txt
-          
-          # Copy updated readme.txt from repository
           cp ../readme.txt readme.txt
-          
-          # Commit changes to SVN
-          svn commit -m "Update Tested up to / readme.txt via GitHub Actions" \
-            --username "${{ secrets.SVN_USERNAME }}" \
-            --password "${{ secrets.SVN_PASSWORD }}" \
-            --non-interactive
+          svn commit -m "Update readme.txt in trunk" --username "${{ secrets.SVN_USERNAME }}" --password "${{ secrets.SVN_PASSWORD }}" --non-interactive
+          cd ..
+
+          # Get Stable tag version from readme.txt
+          STABLE_TAG=$(grep -i "^Stable tag:" readme.txt | awk '{print $NF}')
+
+          # If stable tag exists and isn't trunk, update tag readme too
+          if [ -n "$STABLE_TAG" ] && [ "$STABLE_TAG" != "trunk" ]; then
+            svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-display/tags/$STABLE_TAG svn-tag
+            cd svn-tag
+            svn update readme.txt
+            cp ../readme.txt readme.txt
+            svn commit -m "Update readme.txt in tag $STABLE_TAG" --username "${{ secrets.SVN_USERNAME }}" --password "${{ secrets.SVN_PASSWORD }}" --non-interactive
+          fi
