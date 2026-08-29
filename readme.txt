@@ -18,7 +18,7 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the d
 = Usage =
 - Install and activate the plugin.
 - Navigate to: Settings -> Bangla Date Display.
-- Use widgets or shortcodes. 
+- Use widgets or shortcodes.
 
 = Features =
 - Bangla date (Bangladesh and India).
