@@ -38,6 +38,7 @@ Displays Bangla, Gregorian and Hijri date, Archive Calendar, time, name of the d
 = 10.1.0 =
 * Added option for Hijri date roll over time.
 * Ongoing improvements.
+* Compatible with WP 7.1
 
 = 10.0.0 =
 * Core features are rewritten in JS instead of PHP.
