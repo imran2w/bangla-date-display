@@ -19,7 +19,7 @@ jobs:
       - name: Commit readme.txt to WordPress.org SVN
         run: |
           # Checkout trunk only
-          svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-displaytags/10.1.0 svn-tag
+          svn checkout --depth empty https://plugins.svn.wordpress.org/bangla-date-display/tags/10.1.0 svn-tag
           cd svn-tag
           svn update readme.txt
           
