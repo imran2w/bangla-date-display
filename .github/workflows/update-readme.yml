@@ -2,7 +2,7 @@ name: Update Readme on WordPress.org
 
 on:
   push:
-    branches: [ "master" ] # or main
+    branches: [ "master" ] # master or main, depending on your default branch
     paths:
       - 'readme.txt'
 
